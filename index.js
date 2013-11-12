@@ -25,22 +25,22 @@ var RCSS = {
     this._createStyleTagFromStyleObj(styleObj);
   },
 
-  // merge: function(/*objs..*/) {
-  //   var returnObj = {};
-  //   var extension;
-  //   for (var i = 0; i < arguments.length; i++) {
-  //     extension = arguments[i];
-  //     for (var key in extension) {
-  //       if (!{}.hasOwnProperty.call(extension, key)) continue;
-  //       returnObj[key] = extension[key];
-  //     }
-  //   }
-  //   return returnObj;
-  // },
+  merge: function(/*objs..*/) {
+    var returnObj = {};
+    var extension;
+    for (var i = 0; i < arguments.length; i++) {
+      extension = arguments[i];
+      for (var key in extension) {
+        if (!{}.hasOwnProperty.call(extension, key)) continue;
+        returnObj[key] = extension[key];
+      }
+    }
+    return returnObj;
+  },
 
   _styleList: {},
 
-  _jsObjToCss: function(style) {
+  _jsObjToCSS: function(style) {
     var serialized = '';
     for (var styleName in style) {
       if (styleName == 'className') {
@@ -60,7 +60,7 @@ var RCSS = {
     document.getElementsByTagName('head')[0].appendChild(style);
 
     var styleStr = '.' + styleObj.className + '{';
-    styleStr += this._jsObjToCss(styleObj);
+    styleStr += this._jsObjToCSS(styleObj);
     styleStr += '}';
     style.innerHTML = styleStr;
   }

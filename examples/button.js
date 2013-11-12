@@ -15,8 +15,7 @@ var button = {
   backgroundImage: 'none',
   border: '1px solid transparent',
   borderRadius: '4px',
-  userSelect: 'none',
-  backgroundColor: 'red'
+  userSelect: 'none'
 };
 
 RCSS.createClass(button);
