@@ -1,0 +1,14 @@
+{
+  "name": "examples",
+  "version": "0.0.0",
+  "description": "`buttons.js` contains the css directly lifted from [Bootstrap](http://getbootstrap.com), and transformed into simple JavaScript objects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "chenglou",
+  "license": "MIT",
+  "dependencies": {
+    "react-tools": "~0.5.1"
+  }
+}
