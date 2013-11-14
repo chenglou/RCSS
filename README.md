@@ -4,7 +4,7 @@ CSS as JavaScript objects, imported with `require()`.
 Designed with [React](http://facebook.github.io/react/) in mind.
 
 ```bash
-npm install RCSS
+npm install rcss
 ```
 
 button.js

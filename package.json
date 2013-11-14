@@ -1,5 +1,5 @@
 {
-  "name": "RCSS",
+  "name": "rcss",
   "version": "0.0.0",
   "description": "CSS as JavaScript objects, imported with `require()`.",
   "main": "index.js",
