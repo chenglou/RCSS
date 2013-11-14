@@ -1,0 +1,33 @@
+{
+  "name": "RCSS",
+  "version": "0.0.0",
+  "description": "CSS as JavaScript objects, imported with `require()`.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "sha1": "~1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chenglou/RCSS.git"
+  },
+  "keywords": [
+    "css",
+    "preprocessor",
+    "json",
+    "react",
+    "rcss",
+    "style"
+  ],
+  "author": "chenglou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chenglou/RCSS/issues"
+  }
+}

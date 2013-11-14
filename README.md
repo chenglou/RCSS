@@ -57,3 +57,6 @@ React.renderComponent(
 Except you do pay performance penalties if you inline all your CSS this way. RCSS solves this problem by actually creating and storing your object in a `style` tag, and insert the generated `className` in your object so that you can use it.
 
 And now you get scoping (unique `className`), cascading (`merge` objects) and preprocessing (normal JS operations) for free.
+
+## License
+MIT.
