@@ -1,13 +1,11 @@
 # RCSS
 CSS as JavaScript objects, imported with `require()`.
 
-**Experimental.**
+Designed with [React](http://facebook.github.io/react/) in mind.
 
 ```bash
 npm install RCSS
 ```
-
-Check the `examples/` folder.
 
 button.js
 ```js
@@ -17,7 +15,7 @@ var button = {
   display: 'inline-block',
   padding: '6px 12px',
   marginBottom: '0'
-}
+};
 RCSS.createClass(button);
 
 module.exports = button;
@@ -35,3 +33,27 @@ React.renderComponent(
   document.body
 );
 ```
+
+(Check the `examples/` folder for more.)
+
+"CSS" properties are camelCased to respect JavaScript convention. They're transformed back into the dashed CSS counterparts on-the-fly.
+
+Since React uses the same inline style object format, the exported JavaScript object is 100% reusable even without this library:
+
+```js
+var button = {
+  display: 'inline-block',
+  padding: '6px 12px',
+  marginBottom: '0'
+};
+
+// no RCSS needed!
+React.renderComponent(
+  <button style={button}>Press Me</button>,
+  document.body
+);
+```
+
+Except you do pay performance penalties if you inline all your CSS this way. RCSS solves this problem by actually creating and storing your object in a `style` tag, and insert the generated `className` in your object so that you can use it.
+
+And now you get scoping (unique `className`), cascading (`merge` objects) and preprocessing (normal JS operations) for free.
