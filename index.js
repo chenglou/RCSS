@@ -1,30 +1,61 @@
-function generateRandomStr() {
-  return 'a' + Math.random().toString(36).slice(2);
+var sha1 = require('sha1');
+var styleRuleValidator = require('./styleRuleValidator');
+var styleRuleConverter = require('./styleRuleConverter');
+
+var styleObjList = {};
+
+function generateUniqueKey(string) {
+  // sha1 doesn't necessarily return a char beginning. It'd be invalid css name
+  return 'a' + sha1(string);
 }
 
-function dangerousStyleValue(styleName, value) {
-  var isEmpty = value == null || typeof value === 'boolean' || value === '';
-  if (isEmpty) {
-    return '';
+function jsObjToCSS(style) {
+  var serialized = '';
+  for (var styleName in style) {
+    if (styleName == 'className') continue;
+    if (!styleRuleValidator.isValidName(styleName)) continue;
+
+    var styleValue = style[styleName];
+    if (!styleRuleValidator.isValidValue(styleValue)) continue;
+
+    if (styleValue != null) {
+      serialized += styleRuleConverter.hyphenateProp(styleName) + ':';
+      serialized += styleRuleConverter.escapeValue(styleValue) + ';';
+    }
   }
-  return value;
+  return serialized || null;
 }
 
-var _uppercasePattern = /([A-Z])/g;
-function hyphenate(string) {
-  return string.replace(_uppercasePattern, '-$1').toLowerCase();
+function createStyleTagFromStyleObj(styleObj) {
+  var style = document.createElement('style');
+  document.getElementsByTagName('head')[0].appendChild(style);
+
+  var styleStr = '.' + styleObj.className + '{';
+  styleStr += jsObjToCSS(styleObj);
+  styleStr += '}';
+  style.innerHTML = styleStr;
 }
 
 var RCSS = {
   createClass: function(styleObj) {
     var styleId = JSON.stringify(styleObj);
-    if (this._styleList[styleId]) return;
+    var storedObj = styleObjList[styleId]
+    if (storedObj === styleObj) return;
+    // duplicate definition detection. Should be isolated into own operation
+    // and warn in the future. Though in this particular case it might be
+    // intentional (dynamically call `createClass` on new objs in a loop)
+    if (storedObj) {
+      styleObj.className = storedObj.className;
+      return;
+    }
 
-    styleObj.className = generateRandomStr();
-    this._styleList[styleId] = styleObj;
-    this._createStyleTagFromStyleObj(styleObj);
+    styleObj.className = generateUniqueKey(styleId);
+    styleObjList[styleId] = styleObj;
+    createStyleTagFromStyleObj(styleObj);
   },
 
+  // TODO: find a library that does this. I can't believe there are pages of
+  // results for `merge` and not a single simple and good one
   merge: function(/*objs..*/) {
     var returnObj = {};
     var extension;
@@ -37,33 +68,6 @@ var RCSS = {
     }
     return returnObj;
   },
-
-  _styleList: {},
-
-  _jsObjToCSS: function(style) {
-    var serialized = '';
-    for (var styleName in style) {
-      if (styleName == 'className') {
-        continue;
-      }
-      var styleValue = style[styleName];
-      if (styleValue != null) {
-        serialized += hyphenate(styleName) + ':';
-        serialized += dangerousStyleValue(styleName, styleValue) + ';';
-      }
-    }
-    return serialized || null;
-  },
-
-  _createStyleTagFromStyleObj: function(styleObj) {
-    var style = document.createElement('style');
-    document.getElementsByTagName('head')[0].appendChild(style);
-
-    var styleStr = '.' + styleObj.className + '{';
-    styleStr += this._jsObjToCSS(styleObj);
-    styleStr += '}';
-    style.innerHTML = styleStr;
-  }
 }
 
 module.exports = RCSS;
