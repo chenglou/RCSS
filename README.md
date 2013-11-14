@@ -8,7 +8,7 @@ npm install rcss
 ```
 
 button.js
-```js
+```html
 var RCSS = require('RCSS');
 
 var button = {
@@ -22,7 +22,7 @@ module.exports = button;
 ```
 
 index.js
-```js
+```html
 /** @jsx React.DOM */
 
 var React = require('react-tools').React;
@@ -40,7 +40,7 @@ React.renderComponent(
 
 Since React uses the same inline style object format, the exported JavaScript object is 100% reusable even without this library:
 
-```js
+```html
 var button = {
   display: 'inline-block',
   padding: '6px 12px',
