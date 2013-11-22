@@ -1,6 +1,7 @@
-function isValidName(name) {
-  // TODO: store all css props somewhere and check validity
-  return true;
+var isValidCSSProps = require('valid-css-props');
+
+function isValidProp(prop) {
+  return isValidCSSProps(prop);
 }
 
 function isValidValue(value) {
@@ -8,6 +9,6 @@ function isValidValue(value) {
 }
 
 module.exports = {
-  isValidName: isValidName,
+  isValidProp: isValidProp,
   isValidValue: isValidValue
 };

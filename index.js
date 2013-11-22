@@ -4,35 +4,44 @@ var styleRuleConverter = require('./styleRuleConverter');
 
 var styleObjList = {};
 
-function generateUniqueKey(string) {
+function generateValidCSSClassKey(string) {
   // sha1 doesn't necessarily return a char beginning. It'd be invalid css name
   return 'a' + sha1(string);
 }
 
-function jsObjToCSS(style) {
+function objToCSS(style) {
   var serialized = '';
-  for (var styleName in style) {
-    if (styleName == 'className') continue;
-    if (!styleRuleValidator.isValidName(styleName)) continue;
+  for (var propName in style) {
+    // we put that ourselves
+    if (propName == 'className') continue;
 
-    var styleValue = style[styleName];
+    var cssPropName = styleRuleConverter.hyphenateProp(propName);
+    if (!styleRuleValidator.isValidProp(cssPropName)) {
+      console.warn(
+        '%s (transformed into %s) is not a valid CSS property name.', propName, cssPropName
+      );
+      continue;
+    }
+
+    var styleValue = style[propName];
     if (!styleRuleValidator.isValidValue(styleValue)) continue;
 
     if (styleValue != null) {
-      serialized += styleRuleConverter.hyphenateProp(styleName) + ':';
+      serialized += cssPropName + ':';
       serialized += styleRuleConverter.escapeValue(styleValue) + ';';
     }
   }
   return serialized || null;
 }
 
-function createStyleTagFromStyleObj(styleObj) {
+function createStyleRuleFromStyleObj(styleObj) {
   var style = document.createElement('style');
   document.getElementsByTagName('head')[0].appendChild(style);
 
   var styleStr = '.' + styleObj.className + '{';
-  styleStr += jsObjToCSS(styleObj);
+  styleStr += objToCSS(styleObj);
   styleStr += '}';
+
   style.innerHTML = styleStr;
 }
 
@@ -49,9 +58,9 @@ var RCSS = {
       return;
     }
 
-    styleObj.className = generateUniqueKey(styleId);
+    styleObj.className = generateValidCSSClassKey(styleId);
     styleObjList[styleId] = styleObj;
-    createStyleTagFromStyleObj(styleObj);
+    createStyleRuleFromStyleObj(styleObj);
   },
 
   // TODO: find a library that does this. I can't believe there are pages of
@@ -62,7 +71,8 @@ var RCSS = {
     for (var i = 0; i < arguments.length; i++) {
       extension = arguments[i];
       for (var key in extension) {
-        if (!{}.hasOwnProperty.call(extension, key)) continue;
+        if (!Object.prototype.hasOwnProperty.call(extension, key)) continue;
+
         returnObj[key] = extension[key];
       }
     }
