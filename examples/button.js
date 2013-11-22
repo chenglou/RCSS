@@ -18,6 +18,7 @@ var button = {
   userSelect: 'none'
 };
 
+// parses the object into a CSS class and adds it to a style sheet
 RCSS.createClass(button);
 
 module.exports = button;

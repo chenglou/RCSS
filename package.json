@@ -1,7 +1,7 @@
 {
   "name": "rcss",
-  "version": "0.0.1",
-  "description": "CSS as JavaScript objects, imported with `require()`.",
+  "version": "0.0.2",
+  "description": "Turn your JavaScript objects into CSS classes.",
   "main": "index.js",
   "directories": {
     "example": "examples"

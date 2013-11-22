@@ -1,21 +1,27 @@
 # RCSS
-CSS as JavaScript objects, imported with `require()`.
 
-Designed with [React](http://facebook.github.io/react/) in mind.
+Turn your JavaScript objects into CSS classes.
+
+Designed with [React](http://facebook.github.io/react/) and [Browserify](http://browserify.org) in mind.
 
 ```bash
 npm install rcss
 ```
 
 button.js
-```html
+```js
 var RCSS = require('RCSS');
 
+// and of course, you can use JavaScript here to assign values
+// byebye preprocessors
 var button = {
   display: 'inline-block',
   padding: '6px 12px',
+  // camelCased. Transformed back into the dashed CSS counterparts on-the-fly
   marginBottom: '0'
 };
+
+// parses the object into a CSS class and adds it to a style sheet
 RCSS.createClass(button);
 
 module.exports = button;
@@ -36,27 +42,13 @@ React.renderComponent(
 
 (Check the `examples/` folder for more.)
 
-"CSS" properties are camelCased to respect JavaScript convention. They're transformed back into the dashed CSS counterparts on-the-fly.
+That's it. Additional niceties:
 
-Since React uses the same inline style object format, the exported JavaScript object is 100% reusable even without this library:
-
-```html
-var button = {
-  display: 'inline-block',
-  padding: '6px 12px',
-  marginBottom: '0'
-};
-
-// no RCSS needed!
-React.renderComponent(
-  <button style={button}>Press Me</button>,
-  document.body
-);
-```
-
-Except you do pay performance penalties if you inline all your CSS this way. RCSS solves this problem by actually creating and storing your object in a `style` tag, and insert the generated `className` in your object so that you can use it.
-
-And now you get scoping (unique `className`), cascading (`merge` objects) and preprocessing (normal JS operations) for free.
+- **No CSS preprocessor needed**. You're already constructing your JavaScript objects in... well, JavaScript.
+- `require()` your CSS since they're just plain JS files. Isn't that enough?
+- Cascading for free through `RCSS.merge(obj1, obj2, obj3, ...)`. It's literally just merging all the properties into a new object.
+- Validates your CSS properties.
+- ... And more to come. Just imagine what you can do to normal objects.
 
 ## License
 MIT.
