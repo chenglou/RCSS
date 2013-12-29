@@ -8,7 +8,7 @@ Designed with [React](http://facebook.github.io/react/) and [Browserify](http://
 npm install rcss
 ```
 
-button.js
+button.js:
 ```js
 var RCSS = require('RCSS');
 
@@ -44,8 +44,9 @@ React.renderComponent(
 
 That's it. Additional niceties:
 
-- **No CSS preprocessor needed**. You're already constructing your JavaScript objects in... well, JavaScript.
 - `require()` your CSS since they're just plain JS files. Isn't that enough?
+- **No CSS preprocessor needed**. You're already constructing your JavaScript objects in... well, JavaScript.
+- CSS namespacing for free.
 - Cascading for free through `RCSS.merge(obj1, obj2, obj3, ...)`. It's literally just merging all the properties into a new object.
 - Validates your CSS properties.
 - ... And more to come. Just imagine what you can do to normal objects.
