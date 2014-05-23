@@ -1,4 +1,5 @@
 var sha1 = require('sha1');
+var defaults = require('lodash.defaults');
 var styleRuleValidator = require('./styleRuleValidator');
 var styleRuleConverter = require('./styleRuleConverter');
 
@@ -51,6 +52,7 @@ function createStyleRuleFromStyleObj(styleObj) {
 }
 
 var RCSS = {
+  merge: defaults,
   createClass: function(styleObj) {
     var styleId = JSON.stringify(styleObj);
     var storedObj = styleObjList[styleId];
@@ -66,22 +68,6 @@ var RCSS = {
     styleObj.className = generateValidCSSClassKey(styleId);
     styleObjList[styleId] = styleObj;
     createStyleRuleFromStyleObj(styleObj);
-  },
-
-  // TODO: find a library that does this. I can't believe there are pages of
-  // results for `merge` and not a single simple and good one
-  merge: function(/*objs..*/) {
-    var returnObj = {};
-    var extension;
-    for (var i = 0; i < arguments.length; i++) {
-      extension = arguments[i];
-      for (var key in extension) {
-        if (!Object.prototype.hasOwnProperty.call(extension, key)) continue;
-
-        returnObj[key] = extension[key];
-      }
-    }
-    return returnObj;
   }
 };
 
