@@ -1,4 +1,4 @@
-var RCSS = require('RCSS');
+var RCSS = require('../');
 var buttonStyle = require('./button');
 
 // credits to Bootstrap
