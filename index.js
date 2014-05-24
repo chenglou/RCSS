@@ -52,7 +52,11 @@ function createStyleRuleFromStyleObj(styleObj) {
 }
 
 var RCSS = {
-  merge: defaults,
+  merge: function(){
+    var args = Array.prototype.reverse.call(arguments);
+    return defaults.apply(null, args);
+  },
+
   createClass: function(styleObj) {
     var styleId = JSON.stringify(styleObj);
     var storedObj = styleObjList[styleId];
