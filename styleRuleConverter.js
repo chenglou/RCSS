@@ -1,3 +1,5 @@
+var escape = require('lodash.escape');
+
 var _uppercasePattern = /([A-Z])/g;
 
 function hyphenateProp(string) {
@@ -5,8 +7,7 @@ function hyphenateProp(string) {
 }
 
 function escapeValue(value) {
-  // TODO: this
-  return value;
+  return escape(value);
 }
 
 module.exports = {
