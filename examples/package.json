@@ -9,7 +9,6 @@
   "author": "chenglou",
   "license": "MIT",
   "dependencies": {
-    "react-tools": "~0.5.1",
-    "rcss": "*"
+    "react-tools": "~0.5.1"
   }
 }
