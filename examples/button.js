@@ -2,7 +2,17 @@ var RCSS = require('../');
 
 // credits to Bootstrap
 var button = {
+  ':hover': {
+    color: '#fff'
+  },
+  ':hover:nth-child(2)': {
+    color: '#428bca'
+  },
+  '@media (max-width: 700px)': {
+    backgroundColor: 'transparent'
+  },
   display: 'inline-block',
+  color: '#000',
   padding: '6px 12px',
   marginBottom: '0',
   fontSize: '14px',
