@@ -9,7 +9,6 @@
   "dependencies": {
     "lodash.defaults": "^2.4.1",
     "lodash.escape": "^2.4.1",
-    "sha1": "~1.1.0",
     "valid-css-props": "0.0.2"
   },
   "devDependencies": {},

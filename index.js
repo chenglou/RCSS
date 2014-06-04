@@ -1,4 +1,3 @@
-var sha1 = require('sha1');
 var defaults = require('lodash.defaults');
 
 var styleRuleValidator = require('./styleRuleValidator');
@@ -7,9 +6,11 @@ var styleRuleConverter = require('./styleRuleConverter');
 var existingClasses = {};
 var styleTag = createStyleTag();
 
-function generateValidCSSClassKey(string) {
-  // sha1 doesn't necessarily return a char beginning. It'd be invalid css name
-  return 'a' + sha1(string);
+var classNameId = 0;
+
+function generateValidCSSClassName() {
+  // CSS classNames can't start with a number.
+  return 'c' + (classNameId++);
 }
 
 function objToCSS(style) {
@@ -96,7 +97,7 @@ var RCSS = {
       className = existingClasses[styleId];
     } else {
       // generate a new class and insert it
-      className = generateValidCSSClassKey(styleId);
+      className = generateValidCSSClassName();
       existingClasses[styleId] = className;
       insertStyle(className, styleObj);
     }
