@@ -1,4 +1,4 @@
-var React = require('react-tools').React;
+var React = require('React');
 var buttonStyle = require('./button');
 
 var d = React.DOM;

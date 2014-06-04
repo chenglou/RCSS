@@ -3,8 +3,7 @@
 
 `primaryButton.js` is the equivalent of `btn-primary`. It's just a `button` with new properties merged in.
 
-  1. `npm install` to install React
-  2. If you don't have [browserify](http://browserify.org), `npm install -g browserify`.
-  3. Now run `browserify index.js > out.js`
+  1. `npm install`.
+  2. `npm run build`.
 
 Goodbye CSS preprocessors.

@@ -4,11 +4,16 @@
   "description": "`buttons.js` contains the css directly lifted from [Bootstrap](http://getbootstrap.com), and transformed into simple JavaScript objects.",
   "main": "index.js",
   "scripts": {
+    "build": "./node_modules/.bin/browserify index.js > out.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "chenglou",
   "license": "MIT",
   "dependencies": {
-    "react-tools": "~0.5.1"
+    "envify": "^1.2.1",
+    "react": "^0.10.0"
+  },
+  "devDependencies": {
+    "browserify": "^4.1.8"
   }
 }
