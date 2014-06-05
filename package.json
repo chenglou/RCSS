@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "dependencies": {
-    "lodash.defaults": "^2.4.1",
+    "lodash.assign": "^2.4.1",
     "lodash.escape": "^2.4.1",
     "valid-css-props": "0.0.2"
   },

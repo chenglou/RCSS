@@ -1,4 +1,4 @@
-var defaults = require('lodash.defaults');
+var assign = require('lodash.assign');
 
 var styleRuleValidator = require('./styleRuleValidator');
 var styleRuleConverter = require('./styleRuleConverter');
@@ -83,9 +83,8 @@ function insertStyle(className, styleObj) {
 }
 
 var RCSS = {
-  merge: function(){
-    var args = Array.prototype.reverse.call(arguments);
-    return defaults.apply(null, args);
+  merge: function(a, b, c, d, e) {
+    return assign({}, a, b, c, d, e);
   },
 
   createClass: function(styleObj) {
