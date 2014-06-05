@@ -19,9 +19,15 @@ var App = React.createClass({
       this.state.buttons.map(function(label, i) {
         // dynamic require styles work!
         if (i > 1) {
-          return d.button({className: require('./primaryButton').className}, label);
+          return d.button({
+            className: require('./primaryButton').className,
+            key: label
+          }, label);
         }
-        return d.button({className: buttonStyle.className}, label);
+        return d.button({
+          className: buttonStyle.className,
+          key: label
+        }, label);
       })
     );
   }
