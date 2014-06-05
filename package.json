@@ -11,9 +11,11 @@
     "lodash.escape": "^2.4.1",
     "valid-css-props": "0.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest-cli": "^0.1.15"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
