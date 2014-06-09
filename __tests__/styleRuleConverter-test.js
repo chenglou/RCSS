@@ -1,4 +1,4 @@
-jest.autoMockOff();
+jest.dontMock('../styleRuleConverter');
 
 var styleRuleConverter = require('../styleRuleConverter');
 

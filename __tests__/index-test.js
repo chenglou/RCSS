@@ -1,4 +1,7 @@
-jest.autoMockOff();
+jest
+  .dontMock('../')
+  .dontMock('../styleRuleConverter')
+  .dontMock('../styleRuleValidator');
 
 var RCSS = require('../');
 

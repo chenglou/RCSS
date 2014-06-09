@@ -1,4 +1,4 @@
-jest.autoMockOff();
+jest.dontMock('../styleRuleValidator');
 
 var styleRuleValidator = require('../styleRuleValidator');
 
