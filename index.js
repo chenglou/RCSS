@@ -76,8 +76,7 @@ function parseStyles(className, styleObj) {
         value: styleObj[k]
       });
       return;
-    }
-    else if (k.substring(0, 6) === '@media') {
+    } else if (k.substring(0, 6) === '@media') {
       styles.push({
         className: className,
         value: styleObj[k],
