@@ -8,8 +8,8 @@ var button = {
   ':hover:nth-child(2)': {
     color: '#428bca'
   },
-  '@media (max-width: 700px)': {
-    backgroundColor: 'transparent'
+  '@media (max-width: 500px)': {
+    backgroundColor: 'red'
   },
   display: 'inline-block',
   color: '#000',
