@@ -77,7 +77,7 @@ function parseStyles(className, styleObj) {
       });
       return;
     }
-    else if (mediaQueryValidator(k)) {
+    else if (k.substring(0, 6) === '@media') {
       styles.push({
         className: className,
         value: styleObj[k],
