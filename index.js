@@ -2,6 +2,7 @@ var assign = require('lodash.assign');
 
 var styleRuleValidator = require('./styleRuleValidator');
 var styleRuleConverter = require('./styleRuleConverter');
+var mediaQueryValidator = require('valid-media-queries');
 
 var existingClasses = {};
 var styleTag = createStyleTag();
@@ -48,6 +49,14 @@ function styleToCSS(style) {
   var styleStr = '.' + style.className + '{';
   styleStr += objToCSS(style.value);
   styleStr += '}';
+
+  if (style.media) {
+    if (!mediaQueryValidator(style.media)) {
+      console.log('%s is not a valid media query.', style.media);
+    }
+    styleStr = style.media + '{' + styleStr + '}';
+  }
+
   return styleStr;
 }
 
@@ -65,6 +74,13 @@ function parseStyles(className, styleObj) {
       styles.push({
         className: className+k,
         value: styleObj[k]
+      });
+      return;
+    } else if (k.substring(0, 6) === '@media') {
+      styles.push({
+        className: className,
+        value: styleObj[k],
+        media: k
       });
       return;
     }

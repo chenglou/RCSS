@@ -9,7 +9,8 @@
   "dependencies": {
     "lodash.assign": "^2.4.1",
     "lodash.escape": "^2.4.1",
-    "valid-css-props": "0.0.2"
+    "valid-css-props": "0.0.2",
+    "valid-media-queries": "0.0.2"
   },
   "devDependencies": {
     "jest-cli": "^0.1.15"
