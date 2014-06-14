@@ -33,7 +33,8 @@ function objToCSS(style) {
 
     if (styleValue !== null) {
       serialized += cssPropName + ':';
-      serialized += styleRuleConverter.escapeValue(styleValue) + ';';
+      serialized += styleRuleConverter.escapeValueForProp(styleValue,
+        cssPropName) + ';';
     }
   }
   return serialized || null;

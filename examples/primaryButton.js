@@ -4,6 +4,10 @@ var buttonStyle = require('./button');
 // Credits to Bootstrap. `merge` does exactly what it sounds like: take two or
 // more objects and merge their keys into a new one, in order.
 var primaryButton = RCSS.merge(buttonStyle, {
+  ':before': {
+    content: "(Magically) ",
+    color: "#ddd"
+  },
   ':hover': {
     color: '#000'
   },

@@ -6,11 +6,15 @@ function hyphenateProp(string) {
   return string.replace(_uppercasePattern, '-$1').toLowerCase();
 }
 
-function escapeValue(value) {
+function escapeValueForProp(value, prop) {
+  // 'content' is a special property that must be quoted
+  if (prop === 'content') {
+    return '"' + value + '"';
+  }
   return escape(value);
 }
 
 module.exports = {
   hyphenateProp: hyphenateProp,
-  escapeValue: escapeValue
+  escapeValueForProp: escapeValueForProp
 };
