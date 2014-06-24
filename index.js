@@ -8,10 +8,11 @@ var existingClasses = {};
 var styleTag = createStyleTag();
 
 var classNameId = 0;
+var randomSuffix = Math.random().toString(36).slice(-5);
 
 function generateValidCSSClassName() {
   // CSS classNames can't start with a number.
-  return 'c' + (classNameId++);
+  return 'c' + (classNameId++) + '-' + randomSuffix;
 }
 
 function objToCSS(style) {
