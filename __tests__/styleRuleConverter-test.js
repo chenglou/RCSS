@@ -4,7 +4,7 @@ var styleRuleConverter = require('../styleRuleConverter');
 
 describe('styleRuleConverter', function() {
   it('should escape the style values correctly', function() {
-    expect(styleRuleConverter.escapeValue('<>"\'&hello')).toBe(
+    expect(styleRuleConverter.escapeValueForProp('<>"\'&hello')).toBe(
       '&lt;&gt;&quot;&#39;&amp;hello'
     );
   });

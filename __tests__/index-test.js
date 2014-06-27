@@ -39,13 +39,12 @@ describe('RCSS', function() {
     };
 
     it('should turn an object into a css class descriptor', function() {
-      expect(RCSS.createClass(obj)).toEqual({
-        className: 'c0',
-        display: 'inline',
-        fontSize: '14px',
-        marginBottom: '0',
-        padding: '6px 12px'
-      });
+      var obj2 = RCSS.createClass(obj);
+      expect(obj2.display).toBe('inline');
+      expect(obj2.fontSize).toBe('14px');
+      expect(obj2.padding).toBe('6px 12px');
+      expect(obj2.marginBottom).toBe('0');
+      expect(obj2.className).toMatch(/c0-\w+/);
       // expect(document.querySelector('style').innerHTML).toBe(
       //   '.c0{display:inline;padding:6px 12px;margin-bottom:0;font-size:14px;}'
       // );
