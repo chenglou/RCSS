@@ -1,7 +1,10 @@
-var React = require('React');
-var buttonStyle = require('./button');
+/** @jsx React.DOM */
 
-var d = React.DOM;
+var React = require('React');
+var RCSS = require('../');
+
+var button = require('./button');
+var primaryButton = require('./primaryButton');
 
 var App = React.createClass({
   getInitialState: function() {
@@ -15,22 +18,16 @@ var App = React.createClass({
   },
 
   render: function() {
-    return d.div({},
-      this.state.buttons.map(function(label, i) {
-        // dynamic require styles work!
-        if (i > 1) {
-          return d.button({
-            className: require('./primaryButton').className,
-            key: label
-          }, label);
-        }
-        return d.button({
-          className: buttonStyle.className,
-          key: label
-        }, label);
-      })
+    return (
+      <div>
+        {this.state.buttons.map(function(label, i) {
+          var className = i > 1 ? primaryButton.className : button.className;
+          return <button className={className} key={label}>{label}</button>;
+        })}
+      </div>
     );
   }
 });
 
+RCSS.injectAll();
 React.renderComponent(App({}), document.body);

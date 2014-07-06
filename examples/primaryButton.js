@@ -1,19 +1,16 @@
 var RCSS = require('../');
 var buttonStyle = require('./button');
 
-// Credits to Bootstrap. `merge` does exactly what it sounds like: take two or
-// more objects and merge their keys into a new one, in order.
-var primaryButton = RCSS.merge(buttonStyle, {
-  ':before': {
-    content: "(Magically) ",
-    color: "#ddd"
-  },
-  ':hover': {
-    color: '#000'
-  },
+// Under the hood, `cascade` simply takes two or more objects and deep merge
+// them into a new one, in order.
+var primaryButton = RCSS.cascade(buttonStyle.style, {
   color: '#fff',
   backgroundColor: '#428bca',
-  borderColor: '#357ebd'
+  borderColor: '#357ebd',
+
+  ':hover': {
+    color: '#000'
+  }
 });
 
-module.exports = RCSS.createClass(primaryButton);
+module.exports = RCSS.registerClass(primaryButton);

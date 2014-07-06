@@ -1,16 +1,7 @@
 var RCSS = require('../');
 
-// credits to Bootstrap
+// Credits to Bootstrap.
 var button = {
-  ':hover': {
-    color: '#fff'
-  },
-  ':hover:nth-child(2)': {
-    color: '#428bca'
-  },
-  '@media (max-width: 500px)': {
-    backgroundColor: 'red'
-  },
   display: 'inline-block',
   color: '#000',
   padding: '6px 12px',
@@ -25,9 +16,18 @@ var button = {
   backgroundImage: 'none',
   border: '1px solid transparent',
   borderRadius: '4px',
-  userSelect: 'none'
+  userSelect: 'none',
+
+  ':hover': {
+    color: '#fff'
+  },
+  // Try resizing the window!
+  '@media (max-width: 500px)': {
+    backgroundColor: '#5bc0de',
+    borderColor: '#46b8da'
+  }
 };
 
-// Parses the object into a CSS class, adds it to a style sheet, return the
-// `className` in returnedObj.className.
-module.exports = RCSS.createClass(button);
+// `registerClass` registers the passed object internally and returns a new
+// `object of the format: {className: 'bla', style: yourOriginalButtonObj}.
+module.exports = RCSS.registerClass(button);
