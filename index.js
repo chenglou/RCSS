@@ -1,126 +1,50 @@
-var assign = require('lodash.assign');
+var merge = require('lodash.merge');
 
-var styleRuleValidator = require('./styleRuleValidator');
 var styleRuleConverter = require('./styleRuleConverter');
-var mediaQueryValidator = require('valid-media-queries');
-
-var existingClasses = {};
-var styleTag = createStyleTag();
 
 var classNameId = 0;
 var randomSuffix = Math.random().toString(36).slice(-5);
 
 function generateValidCSSClassName() {
   // CSS classNames can't start with a number.
+  // Random suffix in case there are multiple versions of RCSS.
   return 'c' + (classNameId++) + '-' + randomSuffix;
 }
 
-function objToCSS(style) {
-  var serialized = '';
-  for (var propName in style) {
-    // we put that ourselves
-    if (propName == 'className') continue;
+var registry = [];
 
-    var cssPropName = styleRuleConverter.hyphenateProp(propName);
-    if (!styleRuleValidator.isValidProp(cssPropName)) {
-      console.warn(
-        '%s (transformed into %s) is not a valid CSS property name.', propName, cssPropName
-      );
-      continue;
-    }
-
-    var styleValue = style[propName];
-    if (!styleRuleValidator.isValidValue(styleValue)) continue;
-
-    if (styleValue !== null) {
-      serialized += cssPropName + ':';
-      serialized += styleRuleConverter.escapeValueForProp(styleValue,
-        cssPropName) + ';';
-    }
-  }
-  return serialized || null;
-}
-
-function createStyleTag() {
-  var tag = document.createElement('style');
-  document.getElementsByTagName('head')[0].appendChild(tag);
-  return tag;
-}
-
-function styleToCSS(style) {
-  var styleStr = '.' + style.className + '{';
-  styleStr += objToCSS(style.value);
-  styleStr += '}';
-
-  if (style.media) {
-    if (!mediaQueryValidator(style.media)) {
-      console.log('%s is not a valid media query.', style.media);
-    }
-    styleStr = style.media + '{' + styleStr + '}';
-  }
-
-  return styleStr;
-}
-
-// TODO: support media queries
-function parseStyles(className, styleObj) {
-  var mainStyle = {
-    className: className,
-    value: {}
-  };
-  var styles = [mainStyle];
-
-  Object.keys(styleObj).forEach(function(k){
-    // pseudo-selector, insert a new rule
-    if (k[0] === ':') {
-      styles.push({
-        className: className+k,
-        value: styleObj[k]
-      });
-      return;
-    } else if (k.substring(0, 6) === '@media') {
-      styles.push({
-        className: className,
-        value: styleObj[k],
-        media: k
-      });
-      return;
-    }
-
-    // normal rule, insert into main one
-    mainStyle.value[k] = styleObj[k];
-  });
-
-  return styles;
-}
-
-function insertStyle(className, styleObj) {
-  var styles = parseStyles(className, styleObj);
-  var styleStr = styles.map(styleToCSS).join('');
-  styleTag.innerHTML += styleStr;
+function descriptorsToString(styleDescriptor) {
+  return styleRuleConverter.rulesToString(
+    styleDescriptor.className,
+    styleDescriptor.style
+  );
 }
 
 var RCSS = {
-  merge: function(a, b, c, d, e) {
-    return assign({}, a, b, c, d, e);
+  cascade: function() {
+    return merge.bind(null, {}).apply(null, arguments);
   },
 
-  createClass: function(styleObj) {
-    var styleId = JSON.stringify(styleObj);
-    var className;
+  registerClass: function(styleObj) {
+    var styleDescriptor = {
+      className: generateValidCSSClassName(),
+      style: styleObj
+    };
+    registry.push(styleDescriptor);
 
-    if (existingClasses[styleId]) {
-      // already exists, use the existing className
-      className = existingClasses[styleId];
-    } else {
-      // generate a new class and insert it
-      className = generateValidCSSClassName();
-      existingClasses[styleId] = className;
-      insertStyle(className, styleObj);
-    }
+    return styleDescriptor;
+  },
 
-    styleObj.className = className;
-    return styleObj;
+  injectAll: function() {
+    var tag = document.createElement('style');
+    tag.innerHTML = RCSS.getStylesString();
+    document.getElementsByTagName('head')[0].appendChild(tag);
+  },
+
+  getStylesString: function() {
+    var str = registry.map(descriptorsToString).join('');
+    registry.length = 0;
+    return str;
   }
 };
 

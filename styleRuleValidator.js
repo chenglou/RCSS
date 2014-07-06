@@ -5,7 +5,7 @@ function isValidProp(prop) {
 }
 
 function isValidValue(value) {
-  return value != null && typeof value !== 'boolean' && value !== '';
+  return value !== '' && (typeof value === 'number' || typeof value === 'string');
 }
 
 module.exports = {
