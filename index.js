@@ -1,5 +1,4 @@
-var merge = require('lodash.merge');
-
+var cascade = require('./cascade');
 var styleRuleConverter = require('./styleRuleConverter');
 
 var classNameId = 0;
@@ -21,9 +20,7 @@ function descriptorsToString(styleDescriptor) {
 }
 
 var RCSS = {
-  cascade: function() {
-    return merge.bind(null, {}).apply(null, arguments);
-  },
+  cascade: cascade,
 
   registerClass: function(styleObj) {
     var styleDescriptor = {
