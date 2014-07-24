@@ -1,16 +1,9 @@
 var cascade = require('./cascade');
+var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
 
-var classNameId = 0;
-var randomSuffix = Math.random().toString(36).slice(-5);
-
-function generateValidCSSClassName() {
-  // CSS classNames can't start with a number.
-  // Random suffix in case there are multiple versions of RCSS.
-  return 'c' + (classNameId++) + '-' + randomSuffix;
-}
-
-var registry = [];
+var global = Function("return this")();
+global.registry = global.registry || {};
 
 function descriptorsToString(styleDescriptor) {
   return styleRuleConverter.rulesToString(
@@ -21,16 +14,7 @@ function descriptorsToString(styleDescriptor) {
 
 var RCSS = {
   cascade: cascade,
-
-  registerClass: function(styleObj) {
-    var styleDescriptor = {
-      className: generateValidCSSClassName(),
-      style: styleObj
-    };
-    registry.push(styleDescriptor);
-
-    return styleDescriptor;
-  },
+  registerClass: registerClass,
 
   injectAll: function() {
     var tag = document.createElement('style');
@@ -39,8 +23,15 @@ var RCSS = {
   },
 
   getStylesString: function() {
-    var str = registry.map(descriptorsToString).join('');
-    registry.length = 0;
+    var registry = global.registry;
+    var str = '';
+    for (var key in registry) {
+      if (!registry.hasOwnProperty(key)) {
+        continue;
+      }
+      str += descriptorsToString(registry[key]);
+    }
+    global.registry = {};
     return str;
   }
 };
