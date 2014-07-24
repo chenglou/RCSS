@@ -3,7 +3,7 @@ var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
 
 var global = Function("return this")();
-global.registry = global.registry || {};
+global.__RCSS_0_registry = global.__RCSS_0_registry || {};
 
 function descriptorsToString(styleDescriptor) {
   return styleRuleConverter.rulesToString(
@@ -23,7 +23,7 @@ var RCSS = {
   },
 
   getStylesString: function() {
-    var registry = global.registry;
+    var registry = global.__RCSS_0_registry;
     var str = '';
     for (var key in registry) {
       if (!registry.hasOwnProperty(key)) {
@@ -31,7 +31,7 @@ var RCSS = {
       }
       str += descriptorsToString(registry[key]);
     }
-    global.registry = {};
+    global.__RCSS_0_registry = {};
     return str;
   }
 };

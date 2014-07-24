@@ -15,11 +15,11 @@ function generateValidCSSClassName() {
 }
 
 var global = Function("return this")();
-global.registry = global.registry || {};
+global.__RCSS_0_registry = global.__RCSS_0_registry || {};
 
 function registerClass(styleObj) {
   var hash = hashStyle(styleObj);
-  if (global.registry[hash]) {
+  if (global.__RCSS_0_registry[hash]) {
     // already in the registry, or maybe an identical-looking obj
     return;
   }
@@ -28,7 +28,7 @@ function registerClass(styleObj) {
     className: generateValidCSSClassName(),
     style: styleObj
   };
-  global.registry[hash] = styleDescriptor;
+  global.__RCSS_0_registry[hash] = styleDescriptor;
 
   return styleDescriptor;
 }
