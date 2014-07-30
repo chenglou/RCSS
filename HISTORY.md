@@ -2,7 +2,7 @@ Legend:
   - [I]: improvement
   - [F]: fix
 
-## 0.1.2 (July 30th 2014)
+## 0.1.3 (July 30th 2014)
 - [I] Global registry so that (theoretically) multiple RCSSs can work well with `injectAll`.
 
 ## 0.1.0 (July 5th 2014)
