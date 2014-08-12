@@ -9,8 +9,12 @@
   "dependencies": {
     "lodash.escape": "^2.4.1",
     "lodash.merge": "^2.4.1",
+    "lodash.assign": "^2.4.1",
     "valid-css-props": "0.0.2",
-    "valid-media-queries": "0.0.2"
+    "valid-media-queries": "0.0.2",
+    "react": "^0.10.0",
+    "autoprefixer": "^2.2.0",
+    "tinycolor2": "^1.0.0"
   },
   "devDependencies": {
     "jest-cli": "^0.1.15"

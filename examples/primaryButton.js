@@ -6,7 +6,7 @@ var buttonStyle = require('./button');
 var primaryButton = RCSS.cascade(buttonStyle.style, {
   color: '#fff',
   backgroundColor: '#428bca',
-  borderColor: '#357ebd',
+  borderColor: RCSS.color('#428bca').darken(30),
 
   ':hover': {
     color: '#000'

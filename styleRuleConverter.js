@@ -1,9 +1,15 @@
 var escape = require('lodash.escape');
+var autoprefixer = require('autoprefixer');
 var mediaQueryValidator = require('valid-media-queries');
 var styleRuleValidator = require('./styleRuleValidator');
+var createMarkup = require("./react-bridge").createMarkup;
 
 var _uppercasePattern = /([A-Z])/g;
 var msPattern = /^ms-/;
+
+function postProcess(markup) {
+  return autoprefixer.process(markup).css;
+}
 
 function hyphenateProp(string) {
   // MozTransition -> -moz-transition
@@ -31,10 +37,9 @@ function ruleToString(propName, value) {
     );
     return '';
   }
-  if (!styleRuleValidator.isValidValue(value)) {
-    return '';
-  }
-  return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
+
+  var escapedValue = escapeValueForProp(value, propName);
+  return createMarkup(propName, escapedValue);
 }
 
 function _rulesToStringHeadless(styleObj) {
@@ -81,7 +86,7 @@ function rulesToString(className, styleObj) {
     markup = '.' + className + '{' + markup + '}';
   }
 
-  return markup + pseudos + mediaQueries;
+  return postProcess(markup + pseudos + mediaQueries);
 }
 
 module.exports = {
