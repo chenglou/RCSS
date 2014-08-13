@@ -1,6 +1,8 @@
+var assign = require('lodash.assign');
 var cascade = require('./cascade');
 var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
+var utils = require('./utils');
 
 var global = Function("return this")();
 global.__RCSS_0_registry = global.__RCSS_0_registry || {};
@@ -12,7 +14,7 @@ function descriptorsToString(styleDescriptor) {
   );
 }
 
-var RCSS = {
+var RCSS = assign({
   cascade: cascade,
   registerClass: registerClass,
 
@@ -34,6 +36,6 @@ var RCSS = {
     global.__RCSS_0_registry = {};
     return str;
   }
-};
+}, utils);
 
 module.exports = RCSS;
