@@ -1,40 +1,23 @@
-var escape = require('lodash.escape');
 var mediaQueryValidator = require('valid-media-queries');
 var styleRuleValidator = require('./styleRuleValidator');
-
-var _uppercasePattern = /([A-Z])/g;
-var msPattern = /^ms-/;
-
-function hyphenateProp(string) {
-  // MozTransition -> -moz-transition
-  // msTransition -> -ms-transition. Notice the lower case m
-  // http://modernizr.com/docs/#prefixed
-  // thanks a lot IE
-  return string.replace(_uppercasePattern, '-$1')
-    .toLowerCase()
-    .replace(msPattern, '-ms-');
-}
-
-function escapeValueForProp(value, prop) {
-  // 'content' is a special property that must be quoted
-  if (prop === 'content') {
-    return '"' + value + '"';
-  }
-  return escape(value);
-}
+var valueConverter = require('./valueConverter');
+var propConverter = require('./propConverter');
 
 function ruleToString(propName, value) {
-  var cssPropName = hyphenateProp(propName);
+  var cssPropName = propConverter(propName);
   if (!styleRuleValidator.isValidProp(cssPropName)) {
     console.warn(
       '%s (transformed into %s) is not a valid CSS property name.', propName, cssPropName
     );
     return '';
   }
-  if (!styleRuleValidator.isValidValue(value)) {
+
+  var cssValue = valueConverter(propName, value);
+  if (!styleRuleValidator.isValidValue(cssValue)) {
     return '';
   }
-  return cssPropName + ':' + escapeValueForProp(value, cssPropName) + ';';
+
+  return cssPropName + ':' + cssValue + ';';
 }
 
 function _rulesToStringHeadless(styleObj) {
