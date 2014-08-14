@@ -18873,6 +18873,7 @@ var primaryButton = RCSS.cascade(buttonStyle.style, {
 module.exports = RCSS.registerClass(primaryButton);
 
 },{"../":144,"./button":2}],144:[function(require,module,exports){
+var clone = require('lodash.clone');
 var cascade = require('./cascade');
 var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
@@ -18891,29 +18892,55 @@ var RCSS = {
   cascade: cascade,
   registerClass: registerClass,
 
-  injectAll: function() {
-    var tag = document.createElement('style');
-    tag.innerHTML = RCSS.getStylesString();
-    document.getElementsByTagName('head')[0].appendChild(tag);
-  },
-
-  getStylesString: function() {
+  getStyleIds: function() {
     var registry = global.__RCSS_0_registry;
-    var str = '';
+    var styleIds = [];
     for (var key in registry) {
       if (!registry.hasOwnProperty(key)) {
         continue;
       }
-      str += descriptorsToString(registry[key]);
+      styleIds.push(key);
     }
-    global.__RCSS_0_registry = {};
+    return styleIds;
+  },
+
+  getStyleString: function(styleId) {
+    var registry = global.__RCSS_0_registry;
+    console.log(styleId);
+    if (registry.hasOwnProperty(styleId)) {
+      return descriptorsToString(registry[styleId]);
+    } else {
+      return null;
+    }
+  },
+
+  getStylesString: function() {
+    var str = '';
+    var styleIds = RCSS.getStyleIds();
+    for (var i in styleIds) {
+      str += RCSS.getStyleString(styleIds[i]);
+    }
     return str;
+  },
+
+  injectStyle: function(styleId) {
+    var tag = document.createElement('style');
+    tag.innerHTML = RCSS.getStyleString(styleId);
+    document.getElementsByTagName('head')[0].appendChild(tag);
+    delete global.__RCSS_0_registry[styleId];
+  },
+
+  injectAll: function() {
+    var tag = document.createElement('style');
+    tag.innerHTML = RCSS.getStylesString();
+    document.getElementsByTagName('head')[0].appendChild(tag);
+    global.__RCSS_0_registry = {};
   }
 };
 
 module.exports = RCSS;
 
-},{"./cascade":1,"./registerClass":313,"./styleRuleConverter":314}],145:[function(require,module,exports){
+},{"./cascade":1,"./registerClass":313,"./styleRuleConverter":314,"lodash.clone":145}],145:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="npm" -o ./npm/`
