@@ -5,7 +5,6 @@ jest
   .dontMock('../styleRuleValidator');
 
 var RCSS;
-var classNameSuffixPattern = /.+-(.+$)/;
 
 describe('RCSS', function() {
   beforeEach(function() {
@@ -22,12 +21,11 @@ describe('RCSS', function() {
     });
 
     it('returns the string of style markup', function() {
-      var className = RCSS.registerClass({display: 'none'}).className;
-      RCSS.registerClass({display: 'block'});
+      var className1 = RCSS.registerClass({display: 'none'}).className;
+      var className2 = RCSS.registerClass({display: 'block'}).className;
 
-      var suffix = className.match(classNameSuffixPattern)[1];
       expect(RCSS.getStylesString()).toBe(
-        '.c0-' + suffix + '{display:none;}.c1-' + suffix + '{display:block;}'
+        '.' + className1 + '{display:none;}.' + className2 + '{display:block;}'
       );
     });
   });
@@ -47,11 +45,10 @@ describe('RCSS', function() {
     });
 
     it('should inject the markup', function() {
-      var suffix = RCSS.registerClass({display: 'none'}).className
-        .match(classNameSuffixPattern)[1];
+      var className = RCSS.registerClass({display: 'none'}).className;
       RCSS.injectAll();
       expect(document.querySelector('style').innerHTML).toBe(
-        '.c0-' + suffix + '{display:none;}'
+        '.' + className + '{display:none;}'
       );
     });
   });
