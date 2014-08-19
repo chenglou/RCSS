@@ -22061,11 +22061,11 @@ var global = Function("return this")();
 global.__RCSS_0_registry = global.__RCSS_0_registry || {};
 
 function registerClass(styleObj) {
-  var styleId = hashStyle(styleObj);
+  var styleId = generateValidCSSClassName(hashStyle(styleObj));
 
   if (global.__RCSS_0_registry[styleId] == null) {
     global.__RCSS_0_registry[styleId] = {
-      className: generateValidCSSClassName(styleId),
+      className: styleId,
       style: styleObj
     };
   }
