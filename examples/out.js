@@ -18873,12 +18873,15 @@ var primaryButton = RCSS.cascade(buttonStyle.style, {
 module.exports = RCSS.registerClass(primaryButton);
 
 },{"../":144,"./button":2}],144:[function(require,module,exports){
+var clone = require('lodash.clone');
 var cascade = require('./cascade');
 var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
+var styleTagManager = require('./styleTagManager');
 
 var global = Function("return this")();
 global.__RCSS_0_registry = global.__RCSS_0_registry || {};
+global.__RCSS_0_document_registry = global.__RCSS_0_document_registry || {};
 
 function descriptorsToString(styleDescriptor) {
   return styleRuleConverter.rulesToString(
@@ -18891,29 +18894,83 @@ var RCSS = {
   cascade: cascade,
   registerClass: registerClass,
 
-  injectAll: function() {
-    var tag = document.createElement('style');
-    tag.innerHTML = RCSS.getStylesString();
-    document.getElementsByTagName('head')[0].appendChild(tag);
-  },
-
-  getStylesString: function() {
+  getStyleIds: function() {
     var registry = global.__RCSS_0_registry;
-    var str = '';
+    var styleIds = [];
     for (var key in registry) {
       if (!registry.hasOwnProperty(key)) {
         continue;
       }
-      str += descriptorsToString(registry[key]);
+      styleIds.push(key);
     }
-    global.__RCSS_0_registry = {};
+    return styleIds;
+  },
+
+  getStyleString: function(styleId) {
+    var registry = global.__RCSS_0_registry;
+    if (registry.hasOwnProperty(styleId)) {
+      return descriptorsToString(registry[styleId]);
+    } else {
+      return '';
+    }
+  },
+
+  getStylesString: function() {
+    var str = '';
+    var styleIds = RCSS.getStyleIds();
+    for (var i in styleIds) {
+      str += RCSS.getStyleString(styleIds[i]);
+    }
     return str;
+  },
+
+  injectStyle: function(styleId) {
+    var documentRegistry = global.__RCSS_0_document_registry;
+    if (documentRegistry[styleId]) {
+      return;
+    }
+
+    // Add to document registry
+    documentRegistry[styleId] = true;
+
+    // Inject into page
+    var styleTag = styleTagManager.getStyleTag();
+    styleTag.innerHTML += RCSS.getStyleString(styleId);
+  },
+
+  injectAll: function() {
+    var documentRegistry = global.__RCSS_0_document_registry;
+    var stylesStr = '';
+    var styleIds = RCSS.getStyleIds();
+    for (var i in styleIds) {
+      // Only inject styles that haven't already been injected
+      var styleId = styleIds[i];
+      if (documentRegistry[styleId]) {
+        continue;
+      }
+
+      // Add to document registry
+      documentRegistry[styleId] = true;
+      stylesStr += RCSS.getStyleString(styleId);
+    }
+
+    // Inject into page
+    var styleTag = styleTagManager.getStyleTag();
+    styleTag.innerHTML += stylesStr;
+  },
+
+  syncClasses: function() {
+    var documentRegistry = global.__RCSS_0_document_registry;
+    var classes = styleTagManager.getClasses();
+    for (var i in classes) {
+      documentRegistry[classes[i]] = true;
+    }
   }
 };
 
 module.exports = RCSS;
 
-},{"./cascade":1,"./registerClass":313,"./styleRuleConverter":314}],145:[function(require,module,exports){
+},{"./cascade":1,"./registerClass":313,"./styleRuleConverter":314,"./styleTagManager":316,"lodash.clone":145}],145:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="npm" -o ./npm/`
@@ -22182,4 +22239,46 @@ module.exports = {
   isValidValue: isValidValue
 };
 
-},{"valid-css-props":247}]},{},[3])
+},{"valid-css-props":247}],316:[function(require,module,exports){
+var TAG_ID = '_rcss';
+var classNameRegex = /\.(c\w+)(?:\:)?/;
+var styleTag;
+
+function getClassesForStyleSheet(styleSheet) {
+  var classNames = {};
+  var rules = styleSheet.cssRules;
+  for (i in rules) {
+    var match = classNameRegex.exec(rules[i].selectorText);
+    if (match) {
+      classNames[match[1]] = true;
+    }
+  }
+  return Object.keys(classNames);
+}
+
+var styleTagManager = {
+  getStyleTag: function() {
+    styleTag = styleTag || document.getElementById(TAG_ID);
+    if (styleTag == null) {
+      styleTag = document.createElement('style');
+      styleTag.id = TAG_ID;
+      document.getElementsByTagName('head')[0].appendChild(styleTag);
+    }
+    return styleTag;
+  },
+
+  getClasses: function() {
+    var ownerNode = styleTagManager.getStyleTag();
+    for (var i = 0, l = document.styleSheets.length; i < l; i++) {
+      var styleSheet = document.styleSheets[i];
+      if (styleSheet.ownerNode === ownerNode) {
+        return getClassesForStyleSheet(styleSheet);
+      }
+    }
+    return [];
+  }
+}
+
+module.exports = styleTagManager;
+
+},{}]},{},[3])
