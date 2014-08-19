@@ -18877,6 +18877,7 @@ var clone = require('lodash.clone');
 var cascade = require('./cascade');
 var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
+var styleTagManager = require('./styleTagManager');
 
 var global = Function("return this")();
 global.__RCSS_0_registry = global.__RCSS_0_registry || {};
@@ -18887,15 +18888,6 @@ function descriptorsToString(styleDescriptor) {
     styleDescriptor.className,
     styleDescriptor.style
   );
-}
-
-var styleTag;
-function getStyleTag() {
-  if (styleTag == null) {
-    styleTag = document.createElement('style');
-    document.getElementsByTagName('head')[0].appendChild(styleTag);
-  }
-  return styleTag;
 }
 
 var RCSS = {
@@ -18942,8 +18934,8 @@ var RCSS = {
     documentRegistry[styleId] = true;
 
     // Inject into page
-    var tag = getStyleTag();
-    tag.innerHTML += RCSS.getStyleString(styleId);
+    var styleTag = styleTagManager.getStyleTag();
+    styleTag.innerHTML += RCSS.getStyleString(styleId);
   },
 
   injectAll: function() {
@@ -18963,14 +18955,22 @@ var RCSS = {
     }
 
     // Inject into page
-    var tag = getStyleTag();
-    tag.innerHTML += stylesStr;
+    var styleTag = styleTagManager.getStyleTag();
+    styleTag.innerHTML += stylesStr;
+  },
+
+  syncClasses: function() {
+    var documentRegistry = global.__RCSS_0_document_registry;
+    var classes = styleTagManager.getClasses();
+    for (var i in classes) {
+      documentRegistry[classes[i]] = true;
+    }
   }
 };
 
 module.exports = RCSS;
 
-},{"./cascade":1,"./registerClass":313,"./styleRuleConverter":314,"lodash.clone":145}],145:[function(require,module,exports){
+},{"./cascade":1,"./registerClass":313,"./styleRuleConverter":314,"./styleTagManager":316,"lodash.clone":145}],145:[function(require,module,exports){
 /**
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
  * Build: `lodash modularize modern exports="npm" -o ./npm/`
@@ -22239,4 +22239,46 @@ module.exports = {
   isValidValue: isValidValue
 };
 
-},{"valid-css-props":247}]},{},[3])
+},{"valid-css-props":247}],316:[function(require,module,exports){
+var TAG_ID = '_rcss';
+var classNameRegex = /\.(c\w+)(?:\:)?/;
+var styleTag;
+
+function getClassesForStyleSheet(styleSheet) {
+  var classNames = {};
+  var rules = styleSheet.cssRules;
+  for (i in rules) {
+    var match = classNameRegex.exec(rules[i].selectorText);
+    if (match) {
+      classNames[match[1]] = true;
+    }
+  }
+  return Object.keys(classNames);
+}
+
+var styleTagManager = {
+  getStyleTag: function() {
+    styleTag = styleTag || document.getElementById(TAG_ID);
+    if (styleTag == null) {
+      styleTag = document.createElement('style');
+      styleTag.id = TAG_ID;
+      document.getElementsByTagName('head')[0].appendChild(styleTag);
+    }
+    return styleTag;
+  },
+
+  getClasses: function() {
+    var ownerNode = styleTagManager.getStyleTag();
+    for (var i = 0, l = document.styleSheets.length; i < l; i++) {
+      var styleSheet = document.styleSheets[i];
+      if (styleSheet.ownerNode === ownerNode) {
+        return getClassesForStyleSheet(styleSheet);
+      }
+    }
+    return [];
+  }
+}
+
+module.exports = styleTagManager;
+
+},{}]},{},[3])

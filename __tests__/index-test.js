@@ -1,5 +1,6 @@
 jest
   .dontMock('../')
+  .dontMock('../styleTagManager')
   .dontMock('../styleRuleConverter')
   .dontMock('../registerClass')
   .dontMock('../styleRuleValidator');

@@ -2,6 +2,7 @@ var clone = require('lodash.clone');
 var cascade = require('./cascade');
 var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
+var styleTagManager = require('./styleTagManager');
 
 var global = Function("return this")();
 global.__RCSS_0_registry = global.__RCSS_0_registry || {};
@@ -12,15 +13,6 @@ function descriptorsToString(styleDescriptor) {
     styleDescriptor.className,
     styleDescriptor.style
   );
-}
-
-var styleTag;
-function getStyleTag() {
-  if (styleTag == null) {
-    styleTag = document.createElement('style');
-    document.getElementsByTagName('head')[0].appendChild(styleTag);
-  }
-  return styleTag;
 }
 
 var RCSS = {
@@ -67,8 +59,8 @@ var RCSS = {
     documentRegistry[styleId] = true;
 
     // Inject into page
-    var tag = getStyleTag();
-    tag.innerHTML += RCSS.getStyleString(styleId);
+    var styleTag = styleTagManager.getStyleTag();
+    styleTag.innerHTML += RCSS.getStyleString(styleId);
   },
 
   injectAll: function() {
@@ -88,8 +80,16 @@ var RCSS = {
     }
 
     // Inject into page
-    var tag = getStyleTag();
-    tag.innerHTML += stylesStr;
+    var styleTag = styleTagManager.getStyleTag();
+    styleTag.innerHTML += stylesStr;
+  },
+
+  syncClasses: function() {
+    var documentRegistry = global.__RCSS_0_document_registry;
+    var classes = styleTagManager.getClasses();
+    for (var i in classes) {
+      documentRegistry[classes[i]] = true;
+    }
   }
 };
 
