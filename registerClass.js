@@ -1,36 +1,29 @@
-var classNameId = 0;
-var randomSuffix = Math.random().toString(36).slice(-5);
+var sha1 = require('sha1');
+var clone = require('lodash.clone');
 
 function hashStyle(styleObj) {
-  return JSON.stringify(styleObj);
+  return sha1(JSON.stringify(styleObj));
 }
 
-function generateValidCSSClassName() {
+function generateValidCSSClassName(styleId) {
   // CSS classNames can't start with a number.
-  // Random suffix in case there are multiple versions of RCSS.
-
-  // TODO: since we're back to hashing the style obj, might as well remove this
-  // hack and take the hash to generate a base64 className that can be decoded
-  return 'c' + (classNameId++) + '-' + randomSuffix;
+  return 'c' + styleId;
 }
 
 var global = Function("return this")();
 global.__RCSS_0_registry = global.__RCSS_0_registry || {};
 
 function registerClass(styleObj) {
-  var hash = hashStyle(styleObj);
-  if (global.__RCSS_0_registry[hash]) {
-    // already in the registry, or maybe an identical-looking obj
-    return;
+  var styleId = generateValidCSSClassName(hashStyle(styleObj));
+
+  if (global.__RCSS_0_registry[styleId] == null) {
+    global.__RCSS_0_registry[styleId] = {
+      className: styleId,
+      style: styleObj
+    };
   }
 
-  var styleDescriptor = {
-    className: generateValidCSSClassName(),
-    style: styleObj
-  };
-  global.__RCSS_0_registry[hash] = styleDescriptor;
-
-  return styleDescriptor;
+  return clone(global.__RCSS_0_registry[styleId]);
 }
 
 module.exports = registerClass;

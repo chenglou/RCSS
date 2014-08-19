@@ -1,8 +1,7 @@
 jest
   .dontMock('../registerClass');
 
-var classNamePattern = /c0-\w+/;
-var classNameSuffixPattern = /.+-(.+$)/;
+var classNamePattern = /c\w+/;
 
 var registerClass;
 
@@ -23,10 +22,9 @@ describe('registerClass', function() {
     expect(obj2.className).toMatch(classNamePattern);
   });
 
-  it('should generate the same random class suffix every time', function() {
+  it('should generate the same class for indentical styles', function() {
     var className1 = registerClass({display: 'none'}).className;
-    var className2 = registerClass({display: 'block'}).className;
-    expect(className1.match(classNameSuffixPattern)[1])
-      .toBe(className2.match(classNameSuffixPattern)[1]);
+    var className2 = registerClass({display: 'none'}).className;
+    expect(className1).toBe(className2);
   });
 });
