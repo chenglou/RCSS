@@ -10,7 +10,7 @@
     "deep-merge": "^0.3.1",
     "escape-html": "^1.0.1",
     "valid-css-props": "0.0.2",
-    "valid-media-queries": "0.0.2",
+    "valid-media-queries": "git://github.com/Raynos/valid-media-queries#no-lodash",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
