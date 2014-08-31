@@ -7,10 +7,11 @@
     "example": "examples"
   },
   "dependencies": {
-    "lodash.escape": "^2.4.1",
-    "lodash.merge": "^2.4.1",
+    "deep-merge": "^0.3.1",
+    "escape-html": "^1.0.1",
     "valid-css-props": "0.0.2",
-    "valid-media-queries": "0.0.2"
+    "valid-media-queries": "0.0.2",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
     "jest-cli": "^0.1.15"

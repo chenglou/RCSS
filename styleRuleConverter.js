@@ -1,4 +1,4 @@
-var escape = require('lodash.escape');
+var escape = require('escape-html');
 var mediaQueryValidator = require('valid-media-queries');
 var styleRuleValidator = require('./styleRuleValidator');
 
@@ -20,6 +20,7 @@ function escapeValueForProp(value, prop) {
   if (prop === 'content') {
     return '"' + value + '"';
   }
+
   return escape(value);
 }
 
