@@ -1,5 +1,4 @@
 var sha1 = require('sha1');
-var clone = require('lodash.clone');
 
 function hashStyle(styleObj) {
   return sha1(JSON.stringify(styleObj));
@@ -23,7 +22,12 @@ function registerClass(styleObj) {
     };
   }
 
-  return clone(global.__RCSS_0_registry[styleId]);
+  // Simple shallow clone
+  var styleObj = global.__RCSS_0_registry[styleId];
+  return {
+    className: styleObj.className,
+    style: styleObj.style
+  };
 }
 
 module.exports = registerClass;
