@@ -2,6 +2,10 @@ Legend:
   - [I]: improvement
   - [F]: fix
 
+## 0.1.4 (October 1st 2014)
+- [I] Class names are now a function of the style object, making it easier to perform intelligent server-side rendering.
+- [I] Lodash is no longer a dependency, greatly reducing the size of the module.
+
 ## 0.1.3 (July 30th 2014)
 - [I] Global registry so that (theoretically) multiple RCSSs can work well with `injectAll`.
 
