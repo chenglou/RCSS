@@ -112,6 +112,20 @@ describe('rulesToString', function() {
         '.a{border:none;}.a p{border:1px solid black;}'
       );
     });
+    it('recursive nesting', function() {
+      var style = {
+        border: 'none',
+        '& p': {
+          border: '1px solid black',
+          '& i': {
+            color: 'silver'
+          }
+        }
+      };
+      expect(r(style)).toBe(
+        '.a{border:none;}.a p{border:1px solid black;}.a p i{color:silver;}'
+      );
+    });
   });
 
 });
