@@ -126,6 +126,50 @@ describe('rulesToString', function() {
         '.a{border:none;}.a p{border:1px solid black;}.a p i{color:silver;}'
       );
     });
+    it('recursive nesting with "old style" pseudo-selectors', function() {
+      var style = {
+        border: 'none',
+        ':hover': {
+          border: '1px solid black',
+          '& i': { // ignored for 'old style' pseudo-selectors
+            color: 'silver'
+          }
+        }
+      };
+      expect(r(style)).toBe(
+        '.a{border:none;}.a:hover{border:1px solid black;}'
+      );
+    });
+    it('recursive nesting with pseudo-selectors', function() {
+      var style = {
+        border: 'none',
+        '&:hover': {
+          border: '1px solid black',
+          '& i': {
+            color: 'silver'
+          }
+        }
+      };
+      expect(r(style)).toBe(
+        '.a{border:none;}.a:hover{border:1px solid black;}' +
+        '.a:hover i{color:silver;}'
+      );
+    });
+    it('recursive nesting with media-queries', function() {
+      var style = {
+        border: 'none',
+        '@media (max-width: 500px)': {
+          border: '1px solid black',
+          '& i': {
+            color: 'silver'
+          }
+        }
+      };
+      expect(r(style)).toBe(
+        '.a{border:none;}@media (max-width: 500px){' +
+        '.a{border:1px solid black;}.a i{color:silver;}}'
+      );
+    });
   });
 
 });
