@@ -54,19 +54,25 @@ function _rulesToStringHeadless(styleObj) {
   return markup;
 }
 
-function rulesToString(className, styleObj) {
+function rulesToString(className, styleObj, selector) {
   var markup = '';
   var pseudos = '';
+  var nested = '';
   var mediaQueries = '';
+  if (!selector) {
+    selector = '.' + className;
+  }
 
   for (var key in styleObj) {
     if (!styleObj.hasOwnProperty(key)) {
       continue;
     }
     // Skipping the special pseudo-selectors and media queries.
-    if (key[0] === ':') {
+    if (!!className && key[0] === ':') {
       pseudos += '.' + className + key + '{' +
         _rulesToStringHeadless(styleObj[key]) + '}';
+    } else if (key.indexOf('&') != -1) {
+      nested += rulesToString(null, styleObj[key], key.replace('&', selector));
     } else if (key.substring(0, 6) === '@media') {
       if (!mediaQueryValidator(key)) {
         console.log('%s is not a valid media query.', key);
@@ -79,10 +85,10 @@ function rulesToString(className, styleObj) {
   }
 
   if (markup !== '') {
-    markup = '.' + className + '{' + markup + '}';
+    markup = selector + '{' + markup + '}';
   }
 
-  return markup + pseudos + mediaQueries;
+  return markup + pseudos + nested + mediaQueries;
 }
 
 module.exports = {
