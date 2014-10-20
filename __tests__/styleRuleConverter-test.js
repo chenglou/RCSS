@@ -100,4 +100,18 @@ describe('rulesToString', function() {
     });
   });
 
+  describe('on nested rules', function() {
+    it('simple parent selector substitution', function() {
+      var style = {
+        border: 'none',
+        '& p': {
+          border: '1px solid black'
+        }
+      };
+      expect(r(style)).toBe(
+        '.a{border:none;}.a p{border:1px solid black;}'
+      );
+    });
+  });
+
 });
