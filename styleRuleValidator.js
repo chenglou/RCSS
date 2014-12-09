@@ -1,5 +1,3 @@
-var isValidCSSProps = require('valid-css-props');
-
 function isString(string){
     return typeof string == 'string' || string instanceof String;
 }
