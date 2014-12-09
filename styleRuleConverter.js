@@ -26,6 +26,12 @@ function escapeValueForProp(value, prop) {
 
 function ruleToString(propName, value) {
   var cssPropName = hyphenateProp(propName);
+  if (!styleRuleValidator.isValidProp(cssPropName)) {
+    console.warn(
+      '%s (transformed into %s) is not a valid CSS property name.', propName, cssPropName
+    );
+    return '';
+  }
   if (!styleRuleValidator.isValidValue(value)) {
     return '';
   }
