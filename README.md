@@ -56,7 +56,7 @@ Wrap the style declaration and register it internally. Returns a new object of t
 ### RCSS.injectAll()
 A top-level call that parses all the registered style objects into real CSS, puts the result in a style tag, and injects it in the document `head`. This clears the styles registry.
 
-### RCSS.cascade([styleObjects])
+### RCSS.cascade(styleObj1, styleObj2, ...)
 A simple merge utility that returns a new object. Typically used [this way](https://github.com/chenglou/RCSS/blob/master/examples/primaryButton.js#L6).
 
 ### RCSS.getStylesString()
