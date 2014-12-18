@@ -10,7 +10,7 @@
     "sha1": "^1.1.0",
     "deep-extend": "^0.2.11",
     "escape-html": "^1.0.1",
-    "valid-css-props": "0.0.2",
+    "valid-css-props": "0.0.3",
     "valid-media-queries": "0.0.3"
   },
   "devDependencies": {
