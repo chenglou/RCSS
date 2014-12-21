@@ -1,6 +1,4 @@
-/** @jsx React.DOM */
-
-var React = require('React');
+var React = require('react');
 var RCSS = require('../');
 
 var button = require('./button');
@@ -30,4 +28,4 @@ var App = React.createClass({
 });
 
 RCSS.injectAll();
-React.renderComponent(App({}), document.body);
+React.render(<App />, document.body);
