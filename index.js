@@ -1,9 +1,7 @@
 var cascade = require('./cascade');
 var registerClass = require('./registerClass');
 var styleRuleConverter = require('./styleRuleConverter');
-
-var global = Function("return this")();
-global.__RCSS_0_registry = global.__RCSS_0_registry || {};
+var globalRegistry = require('./registry');
 
 function descriptorsToString(styleDescriptor) {
   return styleRuleConverter.rulesToString(
@@ -23,7 +21,7 @@ var RCSS = {
   },
 
   getStylesString: function() {
-    var registry = global.__RCSS_0_registry;
+    var registry = globalRegistry.registry;
     var str = '';
     for (var key in registry) {
       if (!registry.hasOwnProperty(key)) {
@@ -31,7 +29,7 @@ var RCSS = {
       }
       str += descriptorsToString(registry[key]);
     }
-    global.__RCSS_0_registry = {};
+    globalRegistry.registry = {};
     return str;
   }
 };
