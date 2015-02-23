@@ -7,8 +7,7 @@ global.__RCSS_0_registry = global.__RCSS_0_registry || {};
 
 function descriptorsToString(styleDescriptor) {
   return styleRuleConverter.rulesToString(
-    styleDescriptor.className,
-    styleDescriptor.style
+    '.' + styleDescriptor.className, styleDescriptor.style
   );
 }
 

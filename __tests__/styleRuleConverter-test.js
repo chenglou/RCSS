@@ -8,7 +8,7 @@ var r;
 describe('rulesToString', function() {
   beforeEach(function() {
     styleRuleConverter = require('../styleRuleConverter');
-    r = styleRuleConverter.rulesToString.bind(null, 'a');
+    r = styleRuleConverter.rulesToString.bind(null, '.a');
   });
 
   describe('on normal styles', function() {
@@ -98,6 +98,39 @@ describe('rulesToString', function() {
         '@media (min-width: 100px) and (max-width: 200px){.a{color:blue;}}'
       );
     });
+
+    it('parses nested media queries', function() {
+      var style = {
+        display: 'none',
+        ':before': {
+          color: 'red',
+          '@media (max-width: 500px)': {
+            display: 'block'
+          },
+          '@media (min-width: 100px) and (max-width: 200px)': {
+            color: 'blue'
+          }
+        }
+      };
+      expect(r(style)).toBe(
+        '.a{display:none;}.a:before{color:red;}@media (max-width: 500px){.a:before{display:block;}}' +
+        '@media (min-width: 100px) and (max-width: 200px){.a:before{color:blue;}}'
+      );
+    })
   });
 
+  describe('on nested selectors', function() {
+    it('parses nested selectors', function() {
+      var style = {
+        border: 'none',
+        '.class': {
+          border: '1px solid black'
+        }
+      };
+      expect(r(style)).toBe(
+        '.a{border:none;}.a .class{border:1px solid black;}'
+      );
+
+    })
+  })
 });
