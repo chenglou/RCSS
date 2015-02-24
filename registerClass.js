@@ -23,7 +23,7 @@ function registerClass(styleObj) {
   }
 
   // Simple shallow clone
-  var styleObj = global.__RCSS_0_registry[styleId];
+  styleObj = global.__RCSS_0_registry[styleId];
   return {
     className: styleObj.className,
     style: styleObj.style
