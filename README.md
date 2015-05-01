@@ -21,7 +21,7 @@ Demo of the example folder output [here](https://rawgit.com/chenglou/RCSS/master
 
 button.js:
 ```js
-var RCSS = require('RCSS');
+var RCSS = require('rcss');
 
 var button = {
   display: 'inline-block',
