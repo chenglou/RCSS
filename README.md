@@ -1,5 +1,12 @@
 # RCSS
 
+**Warning**: deprecated. The "CSS in JS" experiment has been successful and there are now much more polished alternatives:
+
+- [React-style](https://github.com/js-next/react-style)
+- [Radium](https://github.com/formidablelabs/radium)
+- [jsxstyle](https://github.com/petehunt/jsxstyle)
+
+
 Turn your JavaScript objects into CSS classes.
 
 Designed with [React](http://facebook.github.io/react/) and [Browserify](http://browserify.org) in mind.
