@@ -1,5 +1,7 @@
 # RCSS
 
+[![Join the chat at https://gitter.im/chenglou/RCSS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/chenglou/RCSS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **Warning**: deprecated. The "CSS in JS" experiment has been successful and there are now much more polished alternatives:
 
 - [React-style](https://github.com/js-next/react-style)
